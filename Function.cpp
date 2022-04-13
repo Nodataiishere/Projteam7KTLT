@@ -697,7 +697,7 @@ void PrintLose()
 			i = 1;
 		Sleep(72);
 		++x;
-		if (x == 40)
+		if (x == 30)
 			break;
 	}
 	system("cls");
@@ -1181,7 +1181,7 @@ void ThreadFunc()
 			}
 			else
 				DrawSnake();
-			Sleep(300 / SPEED);
+			Sleep(200 / SPEED);
 		}
 		else
 		{
