@@ -242,7 +242,7 @@ bool ContinueGame()
 				cout << " ";
 		}
 	}
-
+	PrintLose();
 	GotoXY(xgame + 3, ygame + 2);
 	cout << "Do you want to play more?";
 	GotoXY(xgame + 8, ygame + 4);
@@ -302,13 +302,14 @@ void DrawFood()
 
 void DrawSnake()
 {
-	for (int i = 0; i < SIZE_SNAKE; i++)
+	for (int i = SIZE_SNAKE; i >= 0; i--)
 	{
-		char body = ID_STUDENT[i];
+		char body = ID_STUDENT[SIZE_SNAKE - i - 1];
 		GotoXY(snake[i].x, snake[i].y);
 		cout << body;
 	}
 }
+
 
 void DeleteTail()
 {
@@ -572,7 +573,7 @@ void DrawGate()
 {
 	do
 	{
-		a.x = rand() % (WIDTH_CONSOLE - 4) + 2;
+		a.x = rand() % (WIDTH_CONSOLE - 22) + 2;
 		a.y = rand() % (HEIGH_CONSOLE - 4) + 3;
 	} while (!IsValid(a.x, a.y) || !IsValid(a.x - 1, a.y) || !IsValid(a.x + 1, a.y)
 		|| !IsValid(a.x - 1, a.y - 1) || !IsValid(a.x + 1, a.y - 1));
@@ -601,7 +602,8 @@ void ProcessGate()
 		SIZE_PLUS++;
 	}
 
-	GotoXY(24, HEIGH_CONSOLE);
+
+	GotoXY(WIDTH_CONSOLE - 6, 3);
 	cout << ROUND;
 
 	if (SIZE_SNAKE == 0)
@@ -636,7 +638,7 @@ void ProcessGate()
 	}
 }
 
-void PrintWinner()
+void PrintWin()
 {
 	int xwinner = (WIDTH_CONSOLE / 2) - 12;
 	int ywinner = (HEIGH_CONSOLE / 2) - 3;
@@ -644,19 +646,19 @@ void PrintWinner()
 	int i = 1;
 	while (true)
 	{
-		char Line1[] = "W   W   W  II  N-N     N";
+		char Line1[] = " __        _____ _   _ ";
 		GotoXY(xwinner, ywinner);
 		TextColor(i, Line1);
-		strcpy(Line1, "W   W   W  II  N  N    N");
+		strcpy(Line1, " \\\ \\\      / /_ _| \\\ | |");
 		GotoXY(xwinner, ywinner + 1);
 		TextColor(i, Line1);
-		strcpy(Line1, "W  W W  W  II  N   N   N");
+		strcpy(Line1, "  \\\ \\\ /\\\ / / | ||  \\\| |");
 		GotoXY(xwinner, ywinner + 2);
 		TextColor(i, Line1);
-		strcpy(Line1, "W W   W W  II  N    N  N");
+		strcpy(Line1, "   \\\ V  V /  | || |\\\  |");
 		GotoXY(xwinner, ywinner + 3);
 		TextColor(i, Line1);
-		strcpy(Line1, "W       W  II  N     N-N");
+		strcpy(Line1, "    \\\_/\\\_/  |___|_| \\\_|");
 		GotoXY(xwinner, ywinner + 4);
 		TextColor(i, Line1);
 		i++;
@@ -666,6 +668,41 @@ void PrintWinner()
 	}
 }
 
+void PrintLose()
+{
+	int xwinner = (WIDTH_CONSOLE / 2) - 12;
+	int ywinner = (HEIGH_CONSOLE / 2) - 3;
+	system("cls");
+	int i = 1;
+	int x = 1;
+	while (true)
+	{
+		char Line1[] = "  _     ___  ____  _____ ";
+		GotoXY(xwinner, ywinner);
+		TextColor(i, Line1);
+		strcpy(Line1, " | |   / _ \\\/ ___|| ____|");
+		GotoXY(xwinner, ywinner + 1);
+		TextColor(i, Line1);
+		strcpy(Line1, " | |  | | | \\\___ \\\|  _|  ");
+		GotoXY(xwinner, ywinner + 2);
+		TextColor(i, Line1);
+		strcpy(Line1, " | |__| |_| |___) | |___ ");
+		GotoXY(xwinner, ywinner + 3);
+		TextColor(i, Line1);
+		strcpy(Line1, " |_____\\\___/|____/|_____|");
+		GotoXY(xwinner, ywinner + 4);
+		TextColor(i, Line1);
+		i++;
+		if (i == 14)
+			i = 1;
+		Sleep(72);
+		++x;
+		if (x == 40)
+			break;
+	}
+	system("cls");
+}
+
 //Xu ly top 5 HIGH LENGTH
 bool IsEmptyHighLengthFile()
 {
@@ -673,7 +710,7 @@ bool IsEmptyHighLengthFile()
 	string name;
 	int length;
 
-	fi.open(".\\highlength.txt");
+	fi.open(".\\Data\\highlength.txt");
 	if (fi >> name >> length)
 	{
 		fi.close();
@@ -686,7 +723,7 @@ bool IsEmptyHighLengthFile()
 
 void SaveHighLength()
 {
-	remove(".highlength.txt");
+	remove(".\\Data\\highlength.txt");
 
 	ofstream fo;
 	fo.open(".\\Data\\highlength.txt");
@@ -779,7 +816,7 @@ void SortHighLength()
 void ShowHighLength()
 {
 	ifstream fi;
-	fi.open(".\\highlength.txt");
+	fi.open(".\\Data\\highlength.txt");
 
 	string name;
 	int length;
@@ -933,8 +970,21 @@ void DrawBoard(int x, int y, int width, int height)
 		cout << (unsigned char)219;
 		Sleep(0);
 	}
-	GotoXY(0, height);
-	cout << "Length: " << SIZE_SNAKE << " \t Round: " << ROUND;
+	GotoXY(width - 14, 2);
+	cout << "Length: " << SIZE_SNAKE;
+	GotoXY(width - 14, 3);
+	cout << "Round:  " << ROUND;
+	char Line[] = "MOVE SNAKE";
+	GotoXY(width - 15, 5);
+	TextColor(6, Line);
+	GotoXY(width - 14, 6);
+	cout << "W : Up ";
+	GotoXY(width - 14, 7);
+	cout << "S : Down ";
+	GotoXY(width - 14, 8);
+	cout << "D : Right ";
+	GotoXY(width - 14, 9);
+	cout << "A : Left ";
 	GotoXY(0, height + 1);
 	cout << "Pause : P \t Save : L \t Load: T \t Force exit: Esc";
 }
@@ -977,8 +1027,8 @@ void GenerateFood()
 	{
 		do
 		{
-			x = rand() % (WIDTH_CONSOLE - 2) + 1;
-			y = rand() % (HEIGH_CONSOLE - 2) + 1;
+			x = rand() % (WIDTH_CONSOLE - 25) + 3;
+			y = rand() % (HEIGH_CONSOLE - 5) + 3;
 		} while (IsValid(x, y) == false);
 		food[i] = { x, y };
 	}
@@ -990,8 +1040,8 @@ void Eat()
 
 	SIZE_SNAKE++;
 	INDEX_ID++;
-	GotoXY(0, HEIGH_CONSOLE);
-	cout << "Length: " << SIZE_SNAKE;
+	GotoXY(WIDTH_CONSOLE - 6, 2);
+	cout << SIZE_SNAKE;
 
 	if (FOOD_INDEX == MAX_SIZE_FOOD - 1)
 	{
@@ -1005,10 +1055,10 @@ void Eat()
 
 bool CrashWall()
 {
-	if (snake[SIZE_SNAKE - 1].x + 1 == WIDTH_CONSOLE + 1
-		|| snake[SIZE_SNAKE - 1].x == 0
-		|| snake[SIZE_SNAKE - 1].y + 1 == HEIGH_CONSOLE
-		|| snake[SIZE_SNAKE - 1].y == 0)
+	if (snake[SIZE_SNAKE - 1].x + 1 == WIDTH_CONSOLE - 19
+		|| snake[SIZE_SNAKE - 1].x == 2
+		|| snake[SIZE_SNAKE - 1].y + 1 == HEIGH_CONSOLE - 1
+		|| snake[SIZE_SNAKE - 1].y == 1)
 		return true;
 	else
 		return false;
@@ -1127,11 +1177,11 @@ void ThreadFunc()
 			ProcessGate();
 			if (win == 9) {
 				system("cls");
-				PrintWinner();
+				PrintWin();
 			}
 			else
 				DrawSnake();
-			Sleep(500 / SPEED);
+			Sleep(300 / SPEED);
 		}
 		else
 		{
