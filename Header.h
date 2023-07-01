@@ -1,6 +1,6 @@
 #ifndef __snake_h__
 #define __snake_h__
-
+//File nay cung dc tao tham khao
 #include <thread>
 #include <iostream>
 #include <fstream>

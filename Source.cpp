@@ -16,6 +16,7 @@ int main()
 				STATE = 0;
 				system("cls");
 				break;
+				//Tao bi ngu nen tao phai tham khao code cua do an cu
 			}
 			system("cls");
 			STATE = 1;

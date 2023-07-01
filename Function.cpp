@@ -1,5 +1,5 @@
 #include "Header.h"
-
+//TAo cung tham khao cai nay luon
 HIGHLENGTH HighLength[5];
 HIGHLENGTH NewLength;
 POINT snake[MAX_SIZE_SNAKE];
